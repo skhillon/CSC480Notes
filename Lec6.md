@@ -17,6 +17,8 @@ Now that we know the concepts of genetic algorithms, we're going to move to crea
     - Environment would be its state space, for some software that's the entire internet. Ex: Web Crawler.
 
 ## Percept Sequence: See Slide
+- see slide
+- This is not an algorithm, it's a way of thinking about AI.
 
 ## Rational Agent Requirements
 - Need to do the "right thing" under **uncertainty**. If an agent had infinite knowledge, then it would be trivial to know what to do at any point in time. You wouldn't *need* AI.
