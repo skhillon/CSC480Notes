@@ -513,5 +513,14 @@ Monday, November 5, 2018
 ## Entailment
 - A way we can determine that something else is true from previous knowledge.
 - Often used with respect to the KB.
+- Often implemented with sets, differences, unions, etc.
 
-## 
+## Logical Inference
+- Entailment allows you to generate new sentences based on inferences.
+- Given alpha = "All men are mortal" and b = "Socrates is a man", then beta = "Socrates is a man".
+
+## Inference by Enumeration
+- Effectively the "exhaustive search" approach.
+- If we want to see whether some sentence alpha is the case, we can enumerate through every model and check if KB implies alpha.
+- Has time complexity 2^n. *Not* the method we usually use; that will be introduced next time.
+- Project will involve implementing a resolution prover.
