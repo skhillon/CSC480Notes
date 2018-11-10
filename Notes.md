@@ -524,3 +524,133 @@ Monday, November 5, 2018
 - If we want to see whether some sentence alpha is the case, we can enumerate through every model and check if KB implies alpha.
 - Has time complexity 2^n. *Not* the method we usually use; that will be introduced next time.
 - Project will involve implementing a resolution prover.
+
+# Lecture 19
+
+- Project officially assigned.
+- One quiz is week 9, the other is on the day of the final.
+
+## Intro to Wumpus-Rumpus
+- This is not the same exact project as in the textbook. There's still the same percepts except for the addition of a "Wumpus Compass", which will give you a list of headings for all the wumpuses in the area.
+    - For example, if you have a board, you might get `[N, NE]` if there are two wumpuses, 1 in the same column but row above, and one in a column both above and to the right.
+    - You only get `N, NE, W, SW`, etc. Up to 8 total directions.
+    - Arrow can fly over multiple squares.
+    - Is an arrow allowed to go through multiple wumpuses? TBD.
+    - Only one wumpus per square.
+    - The only place you can find gold is under a wumpus. Not every wumpus will have gold, but all gold will be guarded by a wumpus.
+    - Unlimited arrows? TBD. However, there is a limit to number of actions you can perform so that might just be it.
+- Will allow `re` module, this is a good excuse to learn it.
+- Will need to express in constraint satisfiability form.
+    - Given a set of conjunctions or disjunctions, you try to find values for variables for which the entire expression is true.
+    - If there's no assignment, then the problem is not satisfiable.
+- Part 2 (extra credit) is the actual online search where you enter the wumpus world. TBD.
+
+## ---- BEGIN ACTUAL LECTURE ----
+- Models are an assignment of T/F values to all your propositions. Get 2^n possible models.
+
+## Machine Learning - The Motivation
+- Search methods look for a goal or optimal state
+- Rule-based methods are often given initial information about hte problem, and new information is gathered or derived from existing information.
+    - Problem is that it's almost impossible to come up with every rule.
+    - You could infer, but what happens if you have no idea what to do?
+- Way around it is to allow the agent to make mistakes and receive a penalty which drives it to do "different" things, and eventually it can be "pushed" into the right direction given sets of penalties/rewards.
+
+## Categories of ML
+**Supervised Learning**
+- Approximate an unknown function, mapping inputs to outputs (e.g. map images to cats/dogs/people's faces). You have a closed set of possibilities to assign labels.
+- Need a lot of input data!
+
+**Unsupervised Learning**
+- No way of training our algorithm based on labelled data.
+- *Discover* relationships based on patterns and distances.
+- Ex: Clustering algorithms that define things in their relative distances to each other. If a group of things is "close together", it is defined as a new group.
+- Ex: Autoencoders try to generalize certain properties of inputs. By some process (neural networks), you can output something that was identical to the input. If it matches, then you retained all the meaningful information that was necessary to reproduce it.
+
+**Reinforcement Learning (most likely your definition of "AI")**
+- Utility value exists to be optimized
+- Actions are evaluated and corrected with respect to utility.
+
+## Reinforement Learning
+- In an environment, an agent carries out the optimal actions to take.
+- "Learning" is carried out with rewards, either positive or negative.
+- Reward informs agent of its usefulness.
+- Utility helps you decide which move to make next based on history.
+- Policy function takes a state to action.
+    - *How is this different than a transition model?*
+    - Policy will take in **just** the state and give you an action to perform. This is what you're trying to really learn.
+    - An optimal policy produces better rewards than any other policy.
+
+## Markov Decision Process
+- Is a model for decision making:
+    - Finite # of discrete states
+    - Transistions are stochastic -- factoring in the "realistic notion" that things don't always work out the way you want them to.
+- Probability of a transition follows the Markov assumption.
+    - Depends only on current state, not previous states.
+    - Stochastic transition model representedas `P(s' | s, a)`
+
+## Definition - See slide.
+
+# Lecture 20
+- Representation of KB is up to us.
+- Might want to set up separate classes for conjunctions and disjunctions, etc. You could just check its type.
+- Want to use sets so that you can ensure there is no ordering in any way.
+- CNF is made up of tuples `(T/F, term)`. You can just have separate classes.
+- Main interface you need to support is `KnowledgeBase` with `ask()` and `tell()`.
+- You never remove from KB, it is monotonically increasing.
+
+Ex) He might tell your Knowledge Base "Breeze in 1,1", then if he asks "Pit in 2,1" you should say True"
+
+## Prompt: Explainable AI
+
+## Searching for Inferences
+- Examples are And-Elimination, Modus*
+- You have initial state of kb
+- Then you apply set of inference rules to kb, which generates new entries into KB
+- Goal is a state with a sentence to be proved.
+
+EX from Wumpus --  
+Valid: "If pit in `a`, must be breeze in square adjacent to `a`."
+
+## CNF
+- Need to standardize format, we use CNF: A conjunction of clauses.
+- Each clause is a disjunction of propositions.
+- Each proposition may or may not be negated.
+- Negations must be only directly attached to a proposition.
+    - Use DeMorgan's Law to bring it inside if you need to.
+- Any sentence in propositional logic can be converted to CNF form.
+
+## See Slide to Convert Propositions to CNF
+- Note that there are no implications or bidirectionals; these must be deconstructed.
+
+## Resolution for Propositional Logic
+- KB will be a collection of these resolutions that just keeps growing.
+
+## Resolution Example
+Given the following in KB, prove `NOT Pit(1, 2)`:
+- `Breeze(1, 1) <==> (Pit(1, 2) AND Pit(2, 1))`
+- `NOT Breeze(1, 1)`
+
+Solution:
+1. Eliminate Biconditionals: 
+```
+Breeze(1, 1) -> (Pit(1, 2) AND Pit(2, 1)) -> Breeze(1, 1)
+```
+2. Eliminate 2 resulting implications: 
+```
+let a = (Breeze(1, 1) OR NOT(Pit(1, 2) AND Pit(2, 1)))
+let b = ((Pit(1, 2) OR Pit(2, 1) OR NOT(Breeze(1, 1)))
+result = a AND b
+```
+3. Move negation in `a` inward
+```
+a = (Breeze(1, 1) OR (PIT(1, 2) OR Pit(2, 1)))
+```
+4. Use distributive rule. See slide.
+- You have a `(Breeze(1, 1) OR NOT(Pit(1, 2))` at the beginning.
+- The whole phrase resolves to an empty clause, signifying a contradiction. If there's any empty clauses in the whole thing, the statement is False.
+- You may now enter `NOT Pit(1, 2)` into your KB.
+
+**THINGS TO KNOW**
+- See Slide for Resolution Algorithm Pseudocode (checks if some input is true)
+- Start working on having KB prove whether things in prop logic are true!
+- Next time, we'll work on first-order logic (Wednesday)
