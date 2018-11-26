@@ -526,6 +526,7 @@ Monday, November 5, 2018
 - Project will involve implementing a resolution prover.
 
 # Lecture 19
+Wednesday, November 7, 2018
 
 - Project officially assigned.
 - One quiz is week 9, the other is on the day of the final.
@@ -591,6 +592,8 @@ Monday, November 5, 2018
 ## Definition - See slide.
 
 # Lecture 20
+Friday, November 9, 2018
+
 - Representation of KB is up to us.
 - Might want to set up separate classes for conjunctions and disjunctions, etc. You could just check its type.
 - Want to use sets so that you can ensure there is no ordering in any way.
@@ -654,3 +657,49 @@ a = (Breeze(1, 1) OR (PIT(1, 2) OR Pit(2, 1)))
 - See Slide for Resolution Algorithm Pseudocode (checks if some input is true)
 - Start working on having KB prove whether things in prop logic are true!
 - Next time, we'll work on first-order logic (Wednesday)
+
+# Lecture 21 - I missed it ☹️
+
+# Lecture 22 - I missed it ☹️. Notes by Tim Stoddard.
+Friday, November 16, 2018
+
+* use shunting yard algo to parse the sentences in the assignment
+* once cnf conversion is done, no ANDs will be under ORs in the tree
+* important note: when doing resolution, only cancel out 1 pair of compliments at a time
+  - if there are one or more compliments in a pair of clauses, will always be a tautology (always true)
+* categories of machine learning
+  - supervised learning
+  - unsupervised learning
+  - reinforcement learning
+* MDP
+  - optimal policy
+    * provides best action to take
+    * agents can maximize utility (long term reward) from any s
+* discounting factor
+  - utility represents long term reward
+    * if task has terminal states, utility is sum of rewards
+    * if no terminal states, utility is infinity
+    * optimal utility cannot be found if all utilities are infinity
+  - discounting factor γ (gamma)
+    * reduces reward values further in the future
+    * does not affect immediate rewards
+    * 0 <= γ < 1 (usually close to 1)
+
+# Lecture 23
+Monday, November 26, 2018
+
+# Lecture 24
+Wednesday, November 28, 2018
+
+# Lecture 25
+Friday, November 30, 2018
+
+# Lecture 26
+Monday, December 3, 2018
+
+# Lecture 27
+Wednesday, December 5, 2018
+
+# Lecture 28 -- Final Lecture 🎉
+Friday, December 7, 2018
+
