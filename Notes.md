@@ -688,6 +688,14 @@ Friday, November 16, 2018
 # Lecture 23
 Monday, November 26, 2018
 
+## Q&A
+- `A <-> B` => `(~A OR B) AND (~B OR A)`, first do A, which simplifies to `(B OR ~B)` which is useless but its fine you can keep it.
+- All terms will be predicates from the spec, he's not throwing any curveballs.
+    - Ex: `forall_x(Breeze(x) < - > exists_y(Adjacent(x, y) and Pit(y)))`
+
+## How Substitution works
+- Trying to get predicates to look like each other. If they represent the same predicate, there should be some substition you can perform to make them alike. *After that*, you have to perform the same substitutions to everything in the clause.
+
 # Lecture 24
 Wednesday, November 28, 2018
 
@@ -702,4 +710,5 @@ Wednesday, December 5, 2018
 
 # Lecture 28 -- Final Lecture 🎉
 Friday, December 7, 2018
+- Some presentations today. Quiz 5 is on day of final.
 
