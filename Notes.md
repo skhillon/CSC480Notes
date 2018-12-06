@@ -696,19 +696,85 @@ Monday, November 26, 2018
 ## How Substitution works
 - Trying to get predicates to look like each other. If they represent the same predicate, there should be some substition you can perform to make them alike. *After that*, you have to perform the same substitutions to everything in the clause.
 
-# Lecture 24
+# Lecture 24 - I missed it :(
 Wednesday, November 28, 2018
 
 # Lecture 25
 Friday, November 30, 2018
 
+- We're going to be running a Naive Bayes, which isn't implemented anywhere else.
+- Reviewed rules of probability + Bayes Theorem.
+
 # Lecture 26
 Monday, December 3, 2018
 
-# Lecture 27
+## Extra Credit Opportunities
+- 2 points extra credit for completing prompt, due Sunday.
+- 3 points extra credit if lemmatizer’s tf-idf is done by Friday. Grader will be up by Wednesday.
+- Project 5 will be due Friday of finals week.
+
+## Validation
+- When you use your "testing" set to fit your coefficients, your testing set will begin to influence your model.
+- The solution is to hold out a third validation set. 
+- You split your data into 3: build the model on a 3rd of the data (training). Then, after building that model, you evaluate its performance on the validation set and tweak the parameters of the model. The more times you do this, the more you risk overfitting to the validation set. After you've found a set of parameters that seem to work well, then you evaluate the model on the test set. You should only use the test set once you're sure it works, because you don't want your model to start fitting to the test.
+- Another problem of splitting is that you have less data to train on. The solution is cross-validation. It performs the 3-step process to each subset of the entire set, aggregating results as you go. This allows you to train on everything without bias.
+
+## Precision and Recall
+- Accuracy is one way to measure the model's performance on its testing set. We have not yet defined accuracy.
+- One definition is "all the things it got right" over "all the things it tested".
+- This doesn't work well, because you can just guess one value every time and be very happy with a model that "always chooses red".
+- You also need to consider precision and recall (lot in 466).
+    - Think of these in terms of web queries. We query "wumpus hobbies" in our search engine and get some number of documents.
+    - Precision: of all the documents retrieved, how many were actually about wumpus hobbies?
+    - Recall: of all the possible wumpus documents, how many did we select?
+    - F-score is the harmonic mean of both. You can modify `\beta` to weigh one over the other.
+
+## Ensemble Learning
+- A way of aggregating models together. Often there are tons of different models that do well and you'd like to see how well they can perform collaboratively.
+- One way is to use some kind of "voting" metric, where each model classifies the input and you take a simple majority. If you know certain models tend to do better for certain types of input, you can add a weight to the vote. This is called **bagging**.
+- **Boosting** is more popular. It takes a lot of weak classifiers, puts them together, and start weighing data points that get misclassified more. This sort of forces them to focus on the characteristics that they seemed to previously miss when making classifications.
+
+# Lecture 27 - Final day of lectures before presentations!
 Wednesday, December 5, 2018
 
-# Lecture 28 -- Final Lecture 🎉
-Friday, December 7, 2018
-- Some presentations today. Quiz 5 is on day of final.
+- Do course evals.
+- Khosmood will be teaching the first ever undergrad NLP course in the Spring.
 
+## New Presentation Notes
+- Don't have to be super fancy slides with graphics you steal (and cite)
+- If going on Friday, turn in slides on Polylearn before class. Otherwise day before class.
+- Talk about environment, why it's challenging. Assume they've never seen your environment, but they're all AI students.
+- Explicitly state anything that you imported that isn't part of standard lib.
+- Will need to submit either zip or github link. Assume server has or can install all the packages you need.
+- Careful with pseudocode.
+- HALF the presentation is demoing your agent. Should be able to run live. Make sure you've tested it beforehand and that it works. This is a big part of the presentation.
+- Prepared slides are fine, but don't read off of it.
+
+## Project Q&A
+- Choose unigrams, bigrams, and trigrams of value 3. Will look up tf-idf weight and check if within a certain range. Basically go through each sentence 3 times, generating unigrams, bigrams, and trigrams.
+- You choose n grams with (1, 2, 3), (2, 3, 4), (3, 4, 5), etc...
+- Ignore all punctuation.
+- For extra credit, add a function which simply returns a tf-idf matrix. Due by Friday at 6. He will add this to the end of the document later.
+- `d` is the entire document, `D` is all the documents.
+- tf-idf matrix should have key of (document_id, whatever is there in orignial).
+- Once you've lemmatized, you don't need part of speech anymore.
+- In bi-grams and tri-grams, use an underscore in place of a space.
+- You can also generate a tuple, but the way before is better used.
+
+### "Explain Naive Bayes Part"
+- We want to know what's the probability of it being some label GIVEN some set of observation.
+- Lemmatize, n-gram, get some tf-idf weights for that oen document. Then that small vector representing that one documetn is X. Given all these terms, what's the probability of the label being Y?
+- "Feature" in this case is the terms/tokens/n-grams.
+- P(Y) is percent of documents that ARE that label.
+- P(Xi | X) is what's the probability of a particular term given that we know which document it's in?
+- Maybe make some other dicts that map document to its probability.
+- Yj is a category, like mystery.
+- You won't update your training corpus, so you can cache all of this.
+- Should use log function in math module. Instead, you can sum the base-10 logs of all of them and that's the same thing. Then you multiply by the probability of Y. Log will be negative, so adjust appropriately.
+- Then you choose the best P(Y | Xi) and that's the category you choose.
+- You don't need the Vocabulary (set of n-grams) itself, you just need its size.
+- Set all words to lower case.
+
+
+## For lecture, look up slides.
+The end! 🎉
